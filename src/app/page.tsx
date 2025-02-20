@@ -2,6 +2,7 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Card from "./components/Card";
 import useToggle from "@/hooks/useToggle";
+import EventListenerComponent from "./components/EventListenerComponent";
 
 export default function Home() {
   const [name, setName] = useLocalStorage("name", "");
@@ -16,6 +17,7 @@ export default function Home() {
       </div>
       <div>{value.toString()}</div>
       <input type="text" value={name} onChange={e => setName(e.target.value)} />
+      <EventListenerComponent />
     </div>
   );
 }
