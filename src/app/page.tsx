@@ -1,19 +1,32 @@
 "use client"
 import useLocalStorage from "@/hooks/useLocalStorage";
-import Card from "./components/Card";
 import useToggle from "@/hooks/useToggle";
 import EventListenerComponent from "./components/EventListenerComponent";
 import Counter from "./components/Counter";
 import Controls from "./components/Controls";
-import { useStore } from "../hooks/useStore";
+import { useCounterStore } from "@/hooks/useCountStore";
+import { useEffect } from "react";
+
+const logCount = () => {
+  const count = useCounterStore.getState().count;
+  console.log("count", count);
+
+}
 
 export default function Home() {
   const [name, setName] = useLocalStorage("name", "");
   const [value, toggleValue] = useToggle(false);
+  const count = useCounterStore((state) => state.count);
+  const increment = useCounterStore((state) => state.increment);
+  const incrementAsync = useCounterStore((state) => state.incrementAsync);
+  const decrement = useCounterStore((state) => state.decrement);
+
+  useEffect(() => {
+    logCount();
+  }, [count])
 
   return (
     <div>
-      <Card name={"Test"} />
       <div>
         <button onClick={toggleValue}>Toggle</button>
         <button onClick={() => toggleValue(true)}>Make True</button>
@@ -24,6 +37,14 @@ export default function Home() {
       <EventListenerComponent />
       <Counter />
       <Controls />
+      <div>
+        Count: {count}
+        <div>
+          <button onClick={increment}>Increment</button>
+          <button onClick={incrementAsync}>Increment Async</button>
+          <button onClick={decrement}>Decrement</button>
+        </div>
+      </div>
     </div>
   );
 }
